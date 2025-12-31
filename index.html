@@ -1,0 +1,3374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a5f7a">
+    <title>مكتب المحاماة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --bg: #f5f6fa;
+            --card: #fff;
+            --text: #2d3436;
+            --text2: #636e72;
+            --border: #dfe6e9;
+        }
+        
+        [data-theme=dark] {
+            --bg: #1a1a2e;
+            --card: #16213e;
+            --text: #eaeaea;
+            --text2: #b2bec3;
+            --border: #2d3a4f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        /* شاشة التفعيل */
+        .activation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a5f7a, #2e86ab);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .activation-box {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .activation-box i {
+            font-size: 4rem;
+            color: #1a5f7a;
+            margin-bottom: 20px;
+        }
+        
+        .activation-box h2 {
+            color: #1a5f7a;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .activation-box p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .code-inputs input {
+            width: 55px;
+            height: 65px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .code-inputs input:focus {
+            border-color: #1a5f7a;
+            box-shadow: 0 0 0 4px rgba(26,95,122,0.2);
+        }
+        
+        .activate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1a5f7a, #2e86ab);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .activate-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .error-msg {
+            color: #dc3545;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* التطبيق */
+        .app {
+            display: none;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a5f7a, #2e86ab);
+            color: #fff;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .office-select {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .office-select select {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            background: rgba(255,255,255,0.9);
+            color: #1a5f7a;
+            cursor: pointer;
+        }
+        
+        .office-select button {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: #fff;
+            width: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .container {
+            padding: 15px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            background: var(--card);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .stat-icon.blue {
+            background: rgba(26,95,122,0.15);
+            color: #1a5f7a;
+        }
+        
+        .stat-icon.green {
+            background: rgba(40,167,69,0.15);
+            color: #28a745;
+        }
+        
+        .stat-icon.orange {
+            background: rgba(255,193,7,0.15);
+            color: #e67e22;
+        }
+        
+        .stat-icon.red {
+            background: rgba(220,53,69,0.15);
+            color: #dc3545;
+        }
+        
+        .stat h3 {
+            font-size: 1.4rem;
+        }
+        
+        .stat p {
+            font-size: 0.75rem;
+            color: var(--text2);
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .card-header {
+            padding: 12px 15px;
+            background: rgba(26,95,122,0.05);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            font-size: 0.95rem;
+            color: #1a5f7a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-body {
+            padding: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: #1a5f7a;
+            color: #fff;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: var(--card);
+            color: var(--text);
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #1a5f7a;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-right: 4px solid #1a5f7a;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .item.urgent {
+            border-color: #dc3545;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .item-title {
+            font-weight: 700;
+        }
+        
+        .item-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-info {
+            background: rgba(23,162,184,0.15);
+            color: #17a2b8;
+        }
+        
+        .badge-success {
+            background: rgba(40,167,69,0.15);
+            color: #28a745;
+        }
+        
+        .badge-warning {
+            background: rgba(255,193,7,0.15);
+            color: #d68910;
+        }
+        
+        .badge-danger {
+            background: rgba(220,53,69,0.15);
+            color: #dc3545;
+        }
+        
+        .item-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text2);
+        }
+        
+        .item-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .item-actions button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-edit {
+            background: rgba(255,193,7,0.15);
+            color: #d68910;
+        }
+        
+        .btn-delete {
+            background: rgba(220,53,69,0.15);
+            color: #dc3545;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 5px 20px;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn i {
+            font-size: 18px;
+        }
+        
+        .nav-btn.active {
+            color: #1a5f7a;
+            background: rgba(26,95,122,0.1);
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: 95px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            background: #1a5f7a;
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            box-shadow: 0 5px 20px rgba(26,95,122,0.4);
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: flex-end;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card);
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            background: rgba(26,95,122,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-header h3 {
+            color: #1a5f7a;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text2);
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .modal-footer .btn {
+            flex: 1;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--text2);
+        }
+        
+        .empty i {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 15px;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card);
+            padding: 12px 25px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            transition: transform 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .court-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .court-btn {
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .court-btn:hover {
+            border-color: #1a5f7a;
+        }
+        
+        .court-btn.active {
+            border-color: #1a5f7a;
+            background: rgba(26,95,122,0.1);
+            color: #1a5f7a;
+        }
+        
+        .settings-section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .settings-row:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-row label {
+            font-size: 0.8rem;
+        }
+        
+        .settings-row input {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+        }
+        
+        .history-item {
+            padding: 8px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .payment-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .payment-card {
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .payment-card.green {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .payment-card.red {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+        }
+        
+        .payment-card.blue {
+            background: linear-gradient(135deg, #1a5f7a, #2e86ab);
+        }
+        
+        .payment-card h4 {
+            font-size: 1.2rem;
+        }
+        
+        .payment-card p {
+            font-size: 0.65rem;
+            opacity: 0.9;
+        }
+        
+        .change-code-section {
+            border-top: 2px solid var(--primary);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .notification-permission {
+            background: rgba(40, 167, 69, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .no-office-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .no-office-screen i {
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+        
+        .no-office-screen h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .no-office-screen p {
+            color: var(--text2);
+            margin-bottom: 25px;
+            max-width: 300px;
+        }
+        
+        .developer-section {
+            border: 2px dashed var(--danger);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            background: rgba(220, 53, 69, 0.05);
+        }
+        
+        .developer-section h4 {
+            color: var(--danger);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .postponement-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .postponement-item {
+            background: var(--bg);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .postponement-date {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .postponement-reason {
+            font-size: 0.85rem;
+            color: var(--text2);
+        }
+        
+        .postponement-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        /* زر حذف التاريخ */
+        .clear-date-btn {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .date-input-container {
+            position: relative;
+        }
+        
+        /* للتفعيل عند الضغط على المبلغ المتبقي */
+        .remaining-amount {
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .remaining-amount:hover {
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .payment-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        /* زر تعديل المبالغ في صفحة المالية */
+        .financial-edit-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(26, 95, 122, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        /* Switch toggle */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #1a5f7a;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* تمكين النقر على المبلغ المتبقي */
+        .remaining-amount-clickable {
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        
+        .remaining-amount-clickable:hover {
+            background: rgba(40, 167, 69, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة التفعيل -->
+    <div class="activation" id="activationScreen">
+        <div class="activation-box">
+            <i class="fas fa-lock"></i>
+            <h2>تفعيل التطبيق</h2>
+            <p>أدخل رمز التفعيل المكون من 4 أرقام</p>
+            <div class="code-inputs">
+                <input type="tel" maxlength="1" id="c1" oninput="nextInput(1)">
+                <input type="tel" maxlength="1" id="c2" oninput="nextInput(2)">
+                <input type="tel" maxlength="1" id="c3" oninput="nextInput(3)">
+                <input type="tel" maxlength="1" id="c4" oninput="nextInput(4)">
+            </div>
+            <button class="activate-btn" onclick="activate()">تفعيل التطبيق</button>
+            <p class="error-msg" id="errorMsg">❌ رمز التفعيل غير صحيح</p>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="app" id="mainApp">
+        <header class="header">
+            <div class="header-top">
+                <h1><i class="fas fa-balance-scale"></i> <span id="appTitle">مكتب المحاماة</span></h1>
+                <div class="header-btns">
+                    <button class="header-btn" onclick="toggleLang()"><span id="langBtn">FR</span></button>
+                    <button class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+                </div>
+            </div>
+            <div class="office-select">
+                <select id="officeSelect" onchange="changeOffice()"></select>
+                <button onclick="addOffice()"><i class="fas fa-plus"></i></button>
+                <button onclick="openDeleteOfficeModal()" style="background: rgba(255,255,255,0.3); border: none; color: #fff; width: 40px; border-radius: 10px; cursor: pointer; font-size: 1.2rem;"><i class="fas fa-trash"></i></button>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- شاشة لا يوجد مكاتب -->
+            <div id="noOfficeScreen" class="page active">
+                <div class="no-office-screen">
+                    <i class="fas fa-building"></i>
+                    <h2 id="noOfficeTitle">لا يوجد مكتب محاماة</h2>
+                    <p id="noOfficeDesc">يجب إنشاء مكتب محاماة أولاً لاستخدام التطبيق</p>
+                    <button class="btn btn-primary" onclick="addOffice()" id="createOfficeBtn">
+                        <i class="fas fa-plus-circle"></i> إنشاء مكتب جديد
+                    </button>
+                </div>
+            </div>
+
+            <!-- الرئيسية -->
+            <div id="home" class="page">
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-icon blue"><i class="fas fa-gavel"></i></div>
+                        <div><h3 id="caseCount">0</h3><p id="casesText">القضايا</p></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon green"><i class="fas fa-users"></i></div>
+                        <div><h3 id="clientCount">0</h3><p id="clientsText">العملاء</p></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon orange"><i class="fas fa-calendar"></i></div>
+                        <div><h3 id="sessionCount">0</h3><p id="sessionsText">جلسات قادمة</p></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon red"><i class="fas fa-tasks"></i></div>
+                        <div><h3 id="taskCount">0</h3><p id="tasksText">المهام</p></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-bell"></i> <span id="remindersText">التذكيرات</span></h3></div>
+                    <div class="card-body" id="reminders">
+                        <div class="empty"><i class="fas fa-check"></i><p id="noReminders">لا توجد تذكيرات</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القضايا -->
+            <div id="cases" class="page">
+                <input type="text" class="form-control" placeholder="بحث..." id="caseSearch" oninput="renderCases()" style="margin-bottom:15px">
+                <div id="casesList"></div>
+            </div>
+
+            <!-- العملاء -->
+            <div id="clients" class="page">
+                <input type="text" class="form-control" placeholder="بحث..." id="clientSearch" oninput="renderClients()" style="margin-bottom:15px">
+                <div id="clientsList"></div>
+            </div>
+
+            <!-- المهام -->
+            <div id="tasks" class="page">
+                <div id="tasksList"></div>
+            </div>
+
+            <!-- المالية -->
+            <div id="payments" class="page">
+                <div class="payment-cards">
+                    <button class="financial-edit-btn" onclick="editFinancialAmounts()" title="تعديل المبالغ">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="payment-card green"><h4 id="totalPaid">0</h4><p id="collectedText">المحصّل</p></div>
+                    <div class="payment-card red"><h4 id="totalRemain">0</h4><p id="remainingText">المتبقي</p></div>
+                    <div class="payment-card blue"><h4 id="totalAgreed">0</h4><p id="totalText">الإجمالي</p></div>
+                </div>
+                <div id="paymentsList"></div>
+            </div>
+
+            <!-- الإعدادات -->
+            <div id="settings" class="page">
+                <div class="notification-permission">
+                    <p id="notificationText">تمكين الإشعارات للهاتف</p>
+                    <button class="btn btn-success btn-sm" onclick="requestNotificationPermission()" id="notificationBtn">
+                        <i class="fas fa-bell"></i> <span id="enableNotificationsText">تمكين الإشعارات</span>
+                    </button>
+                </div>
+                
+                <!-- إعدادات الإشعارات -->
+                <div class="settings-section">
+                    <h4><i class="fas fa-bell"></i> <span id="notificationsSettingsText">إعدادات الإشعارات</span></h4>
+                    <div class="settings-row">
+                        <label>تفعيل الإشعارات</label>
+                        <label class="switch">
+                            <input type="checkbox" id="notificationsEnabled" 
+                                   onchange="saveNotificationSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-row">
+                        <label>الإشعارات قبل الموعد (أيام)</label>
+                        <input type="number" id="notificationDays" min="0" max="30" 
+                               onchange="saveNotificationSettings()">
+                    </div>
+                    <div class="settings-row">
+                        <label>إشعارات الصوت</label>
+                        <label class="switch">
+                            <input type="checkbox" id="soundNotifications" 
+                                   onchange="saveNotificationSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-row">
+                        <label>إشعارات الاهتزاز</label>
+                        <label class="switch">
+                            <input type="checkbox" id="vibrationNotifications" 
+                                   onchange="saveNotificationSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h4><i class="fas fa-clock"></i> <span id="autoDatesText">التواريخ التلقائية</span></h4>
+                    <div class="settings-row"><label id="fileBeforeText">ملف الموضوع قبل الجلسة</label><input type="number" id="sFileDays" value="1"></div>
+                    <div class="settings-row"><label id="summonBeforeText">التكليف قبل الجلسة</label><input type="number" id="sSummonDays" value="3"></div>
+                    <div class="settings-row"><label id="judgmentAfterText">الحكم بعد المداولة</label><input type="number" id="sJudgDays" value="7"></div>
+                </div>
+                
+                <div class="settings-section">
+                    <h4><i class="fas fa-balance-scale"></i> <span id="appealDurationText">مدة الاستئناف/الطعن</span></h4>
+                    <div class="settings-row"><label id="junahText">الجنح</label><input type="number" id="sAppealJunah" value="10"></div>
+                    <div class="settings-row"><label id="jazaiaText">الغرفة الجزائية</label><input type="number" id="sAppealJazaia" value="10"></div>
+                    <div class="settings-row"><label id="tahqiqText">التحقيق</label><input type="number" id="sAppealTahqiq" value="3"></div>
+                    <div class="settings-row"><label id="naqdText">الطعن بالنقض</label><input type="number" id="sAppealNaqd" value="60"></div>
+                </div>
+                
+                <!-- قسم المطور -->
+                <div class="developer-section">
+                    <h4><i class="fas fa-user-shield"></i> <span id="developerSectionText">قسم المطور</span></h4>
+                    
+                    <!-- قسم تغيير رمز التفعيل -->
+                    <div class="form-group">
+                        <label id="activationCodeText">رمز التفعيل الحالي: <strong id="currentCodeDisplay">1234</strong></label>
+                    </div>
+                    <div class="form-group">
+                        <label id="newCodeText">رمز التفعيل الجديد (4 أرقام)</label>
+                        <input type="password" class="form-control" id="newActivationCode" placeholder="أدخل رمز جديد" maxlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label id="confirmCodeText">تأكيد الرمز الجديد</label>
+                        <input type="password" class="form-control" id="confirmActivationCode" placeholder="أعد إدخال الرمز" maxlength="4">
+                    </div>
+                    <button class="btn btn-danger btn-block" onclick="changeActivationCode()" id="changeCodeBtn">
+                        <i class="fas fa-exchange-alt"></i> <span id="changeCodeText">تغيير رمز التفعيل</span>
+                    </button>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>مسح جميع البيانات (يجب توخي الحذر)</label>
+                        <button class="btn btn-danger btn-block" onclick="clearAllData()" id="clearDataBtn">
+                            <i class="fas fa-trash"></i> <span id="clearDataText">مسح جميع البيانات</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="saveSettings()" style="margin:15px 0">
+                    <i class="fas fa-save"></i> <span id="saveText">حفظ الإعدادات</span>
+                </button>
+                
+                <div class="settings-section">
+                    <h4><i class="fas fa-database"></i> <span id="backupText">النسخ الاحتياطي</span></h4>
+                    <button class="btn btn-success btn-block" onclick="exportData()" style="margin-bottom:10px">
+                        <i class="fas fa-download"></i> <span id="exportText">تصدير جميع البيانات</span>
+                    </button>
+                    <button class="btn btn-primary btn-block" onclick="document.getElementById('importFile').click()">
+                        <i class="fas fa-upload"></i> <span id="importText">استيراد البيانات</span>
+                    </button>
+                    <input type="file" id="importFile" hidden accept=".json" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+
+        <button class="fab" onclick="openAddModal()"><i class="fas fa-plus"></i></button>
+
+        <nav class="bottom-nav">
+            <button class="nav-btn active" onclick="goTo('home',this)"><i class="fas fa-home"></i><span id="homeNavText">الرئيسية</span></button>
+            <button class="nav-btn" onclick="goTo('cases',this)"><i class="fas fa-gavel"></i><span id="casesNavText">القضايا</span></button>
+            <button class="nav-btn" onclick="goTo('clients',this)"><i class="fas fa-users"></i><span id="clientsNavText">العملاء</span></button>
+            <button class="nav-btn" onclick="goTo('tasks',this)"><i class="fas fa-tasks"></i><span id="tasksNavText">المهام</span></button>
+            <button class="nav-btn" onclick="goTo('payments',this)"><i class="fas fa-coins"></i><span id="paymentsNavText">المالية</span></button>
+            <button class="nav-btn" onclick="goTo('settings',this)"><i class="fas fa-cog"></i><span id="settingsNavText">إعدادات</span></button>
+        </nav>
+    </div>
+
+    <!-- Modal إضافة -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="addNewText">إضافة جديد</h3>
+                <button class="close-btn" onclick="closeModal('addModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-primary btn-block" style="margin-bottom:10px" onclick="openCaseModal()">
+                    <i class="fas fa-gavel"></i> <span id="caseText">قضية جديدة</span>
+                </button>
+                <button class="btn btn-success btn-block" style="margin-bottom:10px" onclick="openClientModal()">
+                    <i class="fas fa-user-plus"></i> <span id="clientText">عميل جديد</span>
+                </button>
+                <button class="btn btn-block" style="background:#f39c12;color:#fff;margin-bottom:10px" onclick="openTaskModal()">
+                    <i class="fas fa-tasks"></i> <span id="taskText">مهمة جديدة</span>
+                </button>
+                <button class="btn btn-block" style="background:#9b59b6;color:#fff" onclick="openPaymentModal()">
+                    <i class="fas fa-coins"></i> <span id="paymentText">دفعة جديدة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal قضية -->
+    <div id="caseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="caseModalTitle">قضية جديدة</h3>
+                <button class="close-btn" onclick="closeModal('caseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="caseId">
+                <div class="form-group"><label id="caseNumberText">رقم القضية</label><input type="text" class="form-control" id="caseNum" required></div>
+                <div class="form-group"><label id="courtAuthorityText">الجهة القضائية</label>
+                    <div class="court-btns">
+                        <div class="court-btn active" onclick="selectCourt('محكمة')" id="courtBtn1">المحكمة</div>
+                        <div class="court-btn" onclick="selectCourt('مجلس')" id="courtBtn2">المجلس</div>
+                        <div class="court-btn" onclick="selectCourt('إداري')" id="courtBtn3">الإداري</div>
+                        <div class="court-btn" onclick="selectCourt('عليا')" id="courtBtn4">المحكمة العليا</div>
+                    </div>
+                </div>
+                <div class="form-group"><label id="sectionText">القسم/الغرفة</label><select class="form-control" id="caseSection" onchange="updateFileDateVisibility()"></select></div>
+                <div class="form-group"><label id="courtNameText">اسم المحكمة أو المجلس</label><input type="text" class="form-control" id="caseCourt"></div>
+                <div class="form-group"><label id="clientSelectText">العميل</label><select class="form-control" id="caseClient"></select></div>
+                <div class="form-group date-input-container">
+                    <label id="firstDateText">تاريخ أول جلسة</label>
+                    <input type="date" class="form-control" id="caseFirstDate" onchange="autoFillDates()">
+                    <button class="clear-date-btn" onclick="clearDate('caseFirstDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-group date-input-container">
+                    <label id="currentDateText">الجلسة الحالية (آخر تأجيل)</label>
+                    <input type="date" class="form-control" id="caseCurrentDate">
+                    <button class="clear-date-btn" onclick="clearDate('caseCurrentDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- ملف الموضوع - سيتم إخفاؤه للأقسام المحددة -->
+                <div class="form-group" id="fileDateGroup">
+                    <div class="date-input-container">
+                        <label id="fileDateText">ملف الموضوع</label>
+                        <input type="date" class="form-control" id="caseFileDate">
+                        <button class="clear-date-btn" onclick="clearDate('caseFileDate')" type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group date-input-container">
+                    <label id="summonDateText">التكليف</label>
+                    <input type="date" class="form-control" id="caseSummonDate">
+                    <button class="clear-date-btn" onclick="clearDate('caseSummonDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-group date-input-container">
+                    <label id="deliberationDateText">تاريخ المداولة</label>
+                    <input type="date" class="form-control" id="caseDelibDate" onchange="calcAppealDate()">
+                    <button class="clear-date-btn" onclick="clearDate('caseDelibDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-group" id="appealGroup">
+                    <div class="date-input-container">
+                        <label id="appealLabel">تاريخ الاستئناف/الطعن</label>
+                        <input type="date" class="form-control" id="caseAppealDate">
+                        <button class="clear-date-btn" onclick="clearDate('caseAppealDate')" type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- تاريخ التذكير بالقضية -->
+                <div class="form-group date-input-container">
+                    <label id="reminderDateText">تاريخ التذكير بالقضية</label>
+                    <input type="date" class="form-control" id="caseReminderDate">
+                    <button class="clear-date-btn" onclick="clearDate('caseReminderDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- تفعيل التذكير -->
+                <div class="settings-row" style="margin-top: 10px;">
+                    <label>تفعيل تذكير لهذه القضية</label>
+                    <label class="switch">
+                        <input type="checkbox" id="caseReminderEnabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="form-group"><label id="statusText">الحالة</label>
+                    <select class="form-control" id="caseStatus">
+                        <option value="مسجلة" id="status1">قضية مسجلة</option>
+                        <option value="تنفيذ" id="status2">قضية قيد التنفيذ</option>
+                        <option value="محكوم" id="status3">قضية محكوم فيها</option>
+                    </select>
+                </div>
+                
+                <!-- قسم التأجيلات -->
+                <div class="postponement-section">
+                    <h4><i class="fas fa-calendar-times"></i> <span id="postponementsText">تواريخ التأجيل</span></h4>
+                    <div id="postponementsList"></div>
+                    <button class="btn btn-warning btn-block btn-sm" onclick="addPostponement()" id="addPostponementBtn">
+                        <i class="fas fa-plus-circle"></i> <span id="addPostponementText">إضافة تأجيل جديد</span>
+                    </button>
+                    
+                    <!-- نموذج إضافة تأجيل -->
+                    <div id="postponementForm" style="display: none; margin-top: 15px; padding: 15px; background: var(--bg); border-radius: 10px;">
+                        <div class="form-group">
+                            <label>تاريخ التأجيل</label>
+                            <input type="date" class="form-control" id="postponementDate" value="">
+                        </div>
+                        <div class="form-group">
+                            <label>سبب التأجيل</label>
+                            <textarea class="form-control" id="postponementReason" rows="2" placeholder="سبب التأجيل..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظات إضافية</label>
+                            <input type="text" class="form-control" id="postponementNotes" placeholder="ملاحظات حول التأجيل...">
+                        </div>
+                        <div class="form-row">
+                            <button class="btn" style="background:#eee" onclick="cancelPostponement()">إلغاء</button>
+                            <button class="btn btn-warning" onclick="savePostponement()">حفظ التأجيل</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group"><label id="notesText">ملاحظات</label><textarea class="form-control" id="caseNotes" rows="3" placeholder="ملاحظات إضافية عن القضية..."></textarea></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('caseModal')" id="cancelText">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveCase()" id="saveBtnText">حفظ القضية</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal عميل -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clientModalTitle">عميل جديد</h3>
+                <button class="close-btn" onclick="closeModal('clientModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clientId">
+                <div class="form-group"><label id="nameText">الاسم الكامل</label><input type="text" class="form-control" id="clientName" required></div>
+                <div class="form-group"><label id="phoneText">رقم الهاتف</label><input type="tel" class="form-control" id="clientPhone"></div>
+                <div class="form-group"><label id="addressText">العنوان</label><input type="text" class="form-control" id="clientAddr"></div>
+                
+                <div class="form-group"><label id="clientNotesText">ملاحظات</label><textarea class="form-control" id="clientNotes" rows="3" placeholder="ملاحظات إضافية عن العميل..."></textarea></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('clientModal')" id="cancelClientText">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveClient()" id="saveClientBtnText">حفظ العميل</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal مهمة -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="taskModalTitle">مهمة جديدة</h3>
+                <button class="close-btn" onclick="closeModal('taskModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="taskId">
+                <div class="form-group"><label id="taskTitleText">عنوان المهمة</label><input type="text" class="form-control" id="taskTitle" required placeholder="مثال: مراجعة ملف القضية رقم..."></div>
+                <div class="form-group"><label id="taskDateText">تاريخ المهمة</label><input type="date" class="form-control" id="taskDate"></div>
+                <div class="form-group"><label id="priorityText">أولوية المهمة</label>
+                    <select class="form-control" id="taskPrio">
+                        <option value="عادي" id="priority1">عادي</option>
+                        <option value="مهم" id="priority2">مهم</option>
+                        <option value="عاجل" id="priority3">عاجل</option>
+                    </select>
+                </div>
+                
+                <!-- تاريخ تذكير المهمة -->
+                <div class="form-group date-input-container">
+                    <label>تاريخ تذكير المهمة</label>
+                    <input type="date" class="form-control" id="taskReminderDate">
+                    <button class="clear-date-btn" onclick="clearDate('taskReminderDate')" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- تفعيل تذكير المهمة -->
+                <div class="settings-row" style="margin-top: 10px;">
+                    <label>تفعيل تذكير لهذه المهمة</label>
+                    <label class="switch">
+                        <input type="checkbox" id="taskReminderEnabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer" id="taskModalFooter">
+                <button class="btn" style="background:#eee" onclick="closeModal('taskModal')" id="cancelTaskText">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveTask()" id="saveTaskBtnText">حفظ المهمة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal دفعة -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="paymentModalTitle">دفعة جديدة</h3>
+                <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="paymentId">
+                <div class="form-group"><label id="paymentClientText">اختر العميل</label><select class="form-control" id="paymentClient"></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label id="agreedAmountText">المبلغ المتفق عليه (دج)</label><input type="number" class="form-control" id="paymentAgreed" min="0" step="100"></div>
+                    <div class="form-group"><label id="paidAmountText">المبلغ المدفوع (دج)</label><input type="number" class="form-control" id="paymentPaid" min="0" step="100"></div>
+                </div>
+                <div class="form-group"><label id="paymentDateText">تاريخ الدفعة</label><input type="date" class="form-control" id="paymentDate"></div>
+                <div class="form-group">
+                    <label>الملاحظة</label>
+                    <textarea class="form-control" id="paymentNote" rows="2" placeholder="ملاحظة حول الدفعة..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('paymentModal')" id="cancelPaymentText">إلغاء</button>
+                <button class="btn btn-primary" onclick="savePayment()" id="savePaymentBtnText">حفظ الدفعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal مكتب -->
+    <div id="officeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="officeModalTitle">مكتب جديد</h3>
+                <button class="close-btn" onclick="closeModal('officeModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label id="officeNameText">اسم المكتب</label><input type="text" class="form-control" id="newOfficeName" placeholder="أدخل اسم المكتب الجديد" required></div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" class="form-control" id="officePhone" placeholder="رقم هاتف المكتب">
+                </div>
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" class="form-control" id="officeAddress" placeholder="عنوان المكتب">
+                </div>
+                <div class="form-group">
+                    <label>ملاحظات</label>
+                    <textarea class="form-control" id="officeNotes" rows="2" placeholder="ملاحظات إضافية..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('officeModal')" id="cancelOfficeText">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveNewOffice()" id="saveOfficeBtnText">إنشاء المكتب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal حذف مكتب -->
+    <div id="deleteOfficeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="deleteOfficeModalTitle">حذف مكتب</h3>
+                <button class="close-btn" onclick="closeModal('deleteOfficeModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>اختر المكتب للحذف</label>
+                    <select class="form-control" id="officeToDelete">
+                        <!-- سيتم ملؤه ديناميكياً -->
+                    </select>
+                </div>
+                <div class="alert" style="background: rgba(220, 53, 69, 0.1); color: var(--danger); padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="deleteWarningText">تحذير: سيتم حذف جميع بيانات هذا المكتب (القضايا، العملاء، المهام، المدفوعات) ولا يمكن استعادتها.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('deleteOfficeModal')">إلغاء</button>
+                <button class="btn btn-danger" onclick="confirmDeleteOffice()">
+                    <i class="fas fa-trash"></i> حذف المكتب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal تعديل المبالغ المالية -->
+    <div id="financialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="financialModalTitle">تعديل المبالغ المالية</h3>
+                <button class="close-btn" onclick="closeModal('financialModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label id="totalAgreedLabel">المبلغ الإجمالي المتفق عليه (دج)</label>
+                    <input type="number" class="form-control" id="totalAgreedInput" min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label id="totalPaidLabel">المبلغ المحصل (دج)</label>
+                    <input type="number" class="form-control" id="totalPaidInput" min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label id="totalRemainLabel">المبلغ المتبقي (دج)</label>
+                    <input type="number" class="form-control" id="totalRemainInput" min="0" step="100">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:#eee" onclick="closeModal('financialModal')" id="cancelFinancialText">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveFinancialAmounts()" id="saveFinancialBtnText">
+                    <i class="fas fa-save"></i> حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"><i class="fas fa-check-circle" style="color:#28a745"></i><span id="toastMsg">تم الحفظ بنجاح</span></div>
+
+    <script>
+        // ========== التهيئة ==========
+        let CODE = localStorage.getItem('activationCode') || '1234';
+        
+        // ========== أقسام المحاكم ==========
+        const SECTIONS = {
+            'محكمة': ['قسم الجنح', 'قسم شؤون الأسرة', 'القسم العقاري', 'القسم المدني', 'القسم التجاري', 'القسم البحري', 'القسم الاجتماعي', 'القسم الاستعجالي', 'القسم الاستعجالي من ساعة لساعة', 'قسم الأحداث', 'قسم الأوامر', 'قسم المخالفات', 'قسم التحقيق'],
+            'مجلس': ['الغرفة الجزائية', 'غرفة شؤون الأسرة', 'الغرفة العقارية', 'الغرفة المدنية', 'الغرفة التجارية', 'الغرفة البحرية', 'الغرفة الاجتماعية', 'غرفة الأحداث', 'الغرفة الاستعجالية', 'غرفة الاتهام', 'الجنايات الابتدائية', 'الجنايات الاستئنافية'],
+            'إداري': ['المحكمة الإدارية', 'المحكمة الإدارية الاستئنافية', 'مجلس الدولة'],
+            'عليا': ['الغرفة المدنية', 'الغرفة العقارية', 'غرفة شؤون الأسرة والمواريث', 'الغرفة التجارية والبحرية', 'الغرفة الاجتماعية', 'الغرفة الجنائية', 'غرفة الجنح والمخالفات']
+        };
+        
+        // ========== المتغيرات ==========
+        let offices = [];
+        let currentOffice = '';
+        let cases = [], clients = [], tasks = [], payments = [];
+        let settings = {
+            fileDays: 1,
+            summonDays: 3,
+            judgDays: 7,
+            appealJunah: 10,
+            appealJazaia: 10,
+            appealTahqiq: 3,
+            appealNaqd: 60
+        };
+        let selectedCourt = 'محكمة';
+        let lang = 'ar', theme = 'light';
+        
+        // المتغيرات المؤقتة للقضية الحالية
+        let postponements = [];
+        let editingPostponementIndex = -1;
+        
+        // ========== ترجمة النصوص ==========
+        const translations = {
+            ar: {
+                appTitle: "مكتب المحاماة",
+                casesText: "القضايا",
+                clientsText: "العملاء",
+                sessionsText: "جلسات قادمة",
+                tasksText: "المهام",
+                remindersText: "التذكيرات",
+                noReminders: "لا توجد تذكيرات",
+                collectedText: "المحصّل",
+                remainingText: "المتبقي",
+                totalText: "الإجمالي",
+                homeNavText: "الرئيسية",
+                casesNavText: "القضايا",
+                clientsNavText: "العملاء",
+                tasksNavText: "المهام",
+                paymentsNavText: "المالية",
+                settingsNavText: "إعدادات",
+                addNewText: "إضافة جديد",
+                caseText: "قضية جديدة",
+                clientText: "عميل جديد",
+                taskText: "مهمة جديدة",
+                paymentText: "دفعة جديدة",
+                caseModalTitle: "قضية جديدة",
+                caseNumberText: "رقم القضية",
+                courtAuthorityText: "الجهة القضائية",
+                sectionText: "القسم/الغرفة",
+                courtNameText: "اسم المحكمة أو المجلس",
+                clientSelectText: "العميل",
+                firstDateText: "تاريخ أول جلسة",
+                currentDateText: "الجلسة الحالية (آخر تأجيل)",
+                fileDateText: "ملف الموضوع",
+                summonDateText: "التكليف",
+                deliberationDateText: "تاريخ المداولة",
+                reminderDateText: "تاريخ التذكير بالقضية",
+                statusText: "الحالة",
+                notesText: "ملاحظات",
+                cancelText: "إلغاء",
+                saveBtnText: "حفظ القضية",
+                clientModalTitle: "عميل جديد",
+                nameText: "الاسم الكامل",
+                phoneText: "رقم الهاتف",
+                addressText: "العنوان",
+                clientNotesText: "ملاحظات",
+                cancelClientText: "إلغاء",
+                saveClientBtnText: "حفظ العميل",
+                taskModalTitle: "مهمة جديدة",
+                taskTitleText: "عنوان المهمة",
+                taskDateText: "تاريخ المهمة",
+                priorityText: "أولوية المهمة",
+                cancelTaskText: "إلغاء",
+                saveTaskBtnText: "حفظ المهمة",
+                paymentModalTitle: "دفعة جديدة",
+                paymentClientText: "اختر العميل",
+                agreedAmountText: "المبلغ المتفق عليه (دج)",
+                paidAmountText: "المبلغ المدفوع (دج)",
+                paymentDateText: "تاريخ الدفعة",
+                cancelPaymentText: "إلغاء",
+                savePaymentBtnText: "حفظ الدفعة",
+                officeModalTitle: "مكتب جديد",
+                officeNameText: "اسم المكتب",
+                cancelOfficeText: "إلغاء",
+                saveOfficeBtnText: "إنشاء المكتب",
+                notificationText: "تمكين الإشعارات للهاتف",
+                enableNotificationsText: "تمكين الإشعارات",
+                notificationsSettingsText: "إعدادات الإشعارات",
+                autoDatesText: "التواريخ التلقائية",
+                fileBeforeText: "ملف الموضوع قبل الجلسة",
+                summonBeforeText: "التكليف قبل الجلسة",
+                judgmentAfterText: "الحكم بعد المداولة",
+                appealDurationText: "مدة الاستئناف/الطعن",
+                junahText: "الجنح",
+                jazaiaText: "الغرفة الجزائية",
+                tahqiqText: "التحقيق",
+                naqdText: "الطعن بالنقض",
+                activationCodeText: "رمز التفعيل الحالي",
+                newCodeText: "رمز التفعيل الجديد (4 أرقام)",
+                confirmCodeText: "تأكيد الرمز الجديد",
+                changeCodeText: "تغيير رمز التفعيل",
+                saveText: "حفظ الإعدادات",
+                backupText: "النسخ الاحتياطي",
+                exportText: "تصدير جميع البيانات",
+                importText: "استيراد البيانات",
+                status1: "قضية مسجلة",
+                status2: "قضية قيد التنفيذ",
+                status3: "قضية محكوم فيها",
+                priority1: "عادي",
+                priority2: "مهم",
+                priority3: "عاجل",
+                courtBtn1: "المحكمة",
+                courtBtn2: "المجلس",
+                courtBtn3: "الإداري",
+                courtBtn4: "المحكمة العليا",
+                noOfficeTitle: "لا يوجد مكتب محاماة",
+                noOfficeDesc: "يجب إنشاء مكتب محاماة أولاً لاستخدام التطبيق",
+                createOfficeBtn: "إنشاء مكتب جديد",
+                developerSectionText: "قسم المطور",
+                clearDataText: "مسح جميع البيانات",
+                postponementsText: "تواريخ التأجيل",
+                addPostponementText: "إضافة تأجيل جديد",
+                financialModalTitle: "تعديل المبالغ المالية",
+                totalAgreedLabel: "المبلغ الإجمالي المتفق عليه (دج)",
+                totalPaidLabel: "المبلغ المحصل (دج)",
+                totalRemainLabel: "المبلغ المتبقي (دج)",
+                cancelFinancialText: "إلغاء",
+                saveFinancialBtnText: "حفظ",
+                deleteOfficeModalTitle: "حذف مكتب",
+                deleteWarningText: "تحذير: سيتم حذف جميع بيانات هذا المكتب (القضايا، العملاء، المهام، المدفوعات) ولا يمكن استعادتها."
+            },
+            fr: {
+                appTitle: "Cabinet d'Avocats",
+                casesText: "Affaires",
+                clientsText: "Clients",
+                sessionsText: "Sessions à venir",
+                tasksText: "Tâches",
+                remindersText: "Rappels",
+                noReminders: "Aucun rappel",
+                collectedText: "Perçu",
+                remainingText: "Restant",
+                totalText: "Total",
+                homeNavText: "Accueil",
+                casesNavText: "Affaires",
+                clientsNavText: "Clients",
+                tasksNavText: "Tâches",
+                paymentsNavText: "Finances",
+                settingsNavText: "Paramètres",
+                addNewText: "Ajouter",
+                caseText: "Nouvelle affaire",
+                clientText: "Nouveau client",
+                taskText: "Nouvelle tâche",
+                paymentText: "Nouveau paiement",
+                caseModalTitle: "Nouvelle affaire",
+                caseNumberText: "Numéro d'affaire",
+                courtAuthorityText: "Autorité judiciaire",
+                sectionText: "Section/Chambre",
+                courtNameText: "Nom du tribunal ou conseil",
+                clientSelectText: "Client",
+                firstDateText: "Date première session",
+                currentDateText: "Session actuelle (dernier report)",
+                fileDateText: "Dossier du sujet",
+                summonDateText: "Assignation",
+                deliberationDateText: "Date de délibération",
+                reminderDateText: "Date de rappel de l'affaire",
+                statusText: "Statut",
+                notesText: "Notes",
+                cancelText: "Annuler",
+                saveBtnText: "Enregistrer l'affaire",
+                clientModalTitle: "Nouveau client",
+                nameText: "Nom complet",
+                phoneText: "Téléphone",
+                addressText: "Adresse",
+                clientNotesText: "Notes",
+                cancelClientText: "Annuler",
+                saveClientBtnText: "Enregistrer le client",
+                taskModalTitle: "Nouvelle tâche",
+                taskTitleText: "Titre de la tâche",
+                taskDateText: "Date de la tâche",
+                priorityText: "Priorité",
+                cancelTaskText: "Annuler",
+                saveTaskBtnText: "Enregistrer la tâche",
+                paymentModalTitle: "Nouveau paiement",
+                paymentClientText: "Choisir le client",
+                agreedAmountText: "Montant convenu (DA)",
+                paidAmountText: "Montant payé (DA)",
+                paymentDateText: "Date du paiement",
+                cancelPaymentText: "Annuler",
+                savePaymentBtnText: "Enregistrer le paiement",
+                officeModalTitle: "Nouveau cabinet",
+                officeNameText: "Nom du cabinet",
+                cancelOfficeText: "Annuler",
+                saveOfficeBtnText: "Créer le cabinet",
+                notificationText: "Activer les notifications",
+                enableNotificationsText: "Activer",
+                notificationsSettingsText: "Paramètres des notifications",
+                autoDatesText: "Dates automatiques",
+                fileBeforeText: "Dossier avant session",
+                summonBeforeText: "Assignation avant session",
+                judgmentAfterText: "Jugement après délibération",
+                appealDurationText: "Délai d'appel/recours",
+                junahText: "Délits",
+                jazaiaText: "Chambre pénale",
+                tahqiqText: "Enquête",
+                naqdText: "Pourvoi en cassation",
+                activationCodeText: "Code d'activation actuel",
+                newCodeText: "Nouveau code (4 chiffres)",
+                confirmCodeText: "Confirmer le nouveau code",
+                changeCodeText: "Changer le code",
+                saveText: "Enregistrer les paramètres",
+                backupText: "Sauvegarde",
+                exportText: "Exporter toutes les données",
+                importText: "Importer des données",
+                status1: "Affaire enregistrée",
+                status2: "Affaire en cours",
+                status3: "Affaire jugée",
+                priority1: "Normal",
+                priority2: "Important",
+                priority3: "Urgent",
+                courtBtn1: "Tribunal",
+                courtBtn2: "Conseil",
+                courtBtn3: "Administratif",
+                courtBtn4: "Cour suprême",
+                noOfficeTitle: "Aucun cabinet d'avocats",
+                noOfficeDesc: "Vous devez créer un cabinet d'avocats d'abord",
+                createOfficeBtn: "Créer un nouveau cabinet",
+                developerSectionText: "Section Développeur",
+                clearDataText: "Effacer toutes les données",
+                postponementsText: "Dates de report",
+                addPostponementText: "Ajouter un nouveau report",
+                financialModalTitle: "Modifier les montants financiers",
+                totalAgreedLabel: "Montant total convenu (DA)",
+                totalPaidLabel: "Montant perçu (DA)",
+                totalRemainLabel: "Montant restant (DA)",
+                cancelFinancialText: "Annuler",
+                saveFinancialBtnText: "Enregistrer",
+                deleteOfficeModalTitle: "Supprimer le cabinet",
+                deleteWarningText: "Attention: Toutes les données de ce cabinet (affaires, clients, tâches, paiements) seront supprimées et ne pourront pas être récupérées."
+            }
+        };
+        
+        // ========== التفعيل ==========
+        function nextInput(n) {
+            if (document.getElementById('c' + n).value && n < 4) {
+                document.getElementById('c' + (n + 1)).focus();
+            }
+        }
+        
+        function activate() {
+            const code = document.getElementById('c1').value + document.getElementById('c2').value + document.getElementById('c3').value + document.getElementById('c4').value;
+            if (code === CODE) {
+                localStorage.setItem('activated', 'yes');
+                document.getElementById('activationScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                init();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('c1').value = '';
+                document.getElementById('c2').value = '';
+                document.getElementById('c3').value = '';
+                document.getElementById('c4').value = '';
+                document.getElementById('c1').focus();
+            }
+        }
+        
+        // ========== التهيئة ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('activated') === 'yes') {
+                document.getElementById('activationScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                init();
+            }
+        });
+        
+        function init() {
+            // تحميل المكاتب
+            offices = JSON.parse(localStorage.getItem('offices')) || [];
+            currentOffice = localStorage.getItem('currentOffice') || '';
+            
+            // تحميل البيانات
+            if (offices.length > 0 && currentOffice) {
+                loadData();
+            } else if (offices.length > 0 && !currentOffice) {
+                currentOffice = offices[0].id;
+                localStorage.setItem('currentOffice', currentOffice);
+                loadData();
+            }
+            
+            renderOffices();
+            updateSections();
+            updateOfficeDisplay();
+            translatePage();
+            
+            // تحميل إعدادات الإشعارات
+            loadNotificationSettings();
+            
+            // تفعيل الإشعارات إذا كانت مفعلة
+            if (localStorage.getItem('notificationsEnabled') === 'true') {
+                enableNotifications();
+            }
+            
+            // عرض رمز التفعيل الحالي
+            document.getElementById('currentCodeDisplay').textContent = CODE;
+            
+            // تحميل الإعدادات المحفوظة
+            loadSavedSettings();
+        }
+        
+        function loadData() {
+            if (currentOffice) {
+                const data = JSON.parse(localStorage.getItem('data_' + currentOffice)) || {};
+                cases = data.cases || [];
+                clients = data.clients || [];
+                tasks = data.tasks || [];
+                payments = data.payments || [];
+                settings = data.settings || settings;
+                
+                // تحديث واجهة الإعدادات
+                updateSettingsUI();
+            }
+        }
+        
+        function updateSettingsUI() {
+            document.getElementById('sFileDays').value = settings.fileDays;
+            document.getElementById('sSummonDays').value = settings.summonDays;
+            document.getElementById('sJudgDays').value = settings.judgDays;
+            document.getElementById('sAppealJunah').value = settings.appealJunah;
+            document.getElementById('sAppealJazaia').value = settings.appealJazaia;
+            document.getElementById('sAppealTahqiq').value = settings.appealTahqiq;
+            document.getElementById('sAppealNaqd').value = settings.appealNaqd;
+        }
+        
+        function loadNotificationSettings() {
+            document.getElementById('notificationsEnabled').checked = localStorage.getItem('notificationsEnabled') === 'true';
+            document.getElementById('notificationDays').value = localStorage.getItem('notificationDays') || '1';
+            document.getElementById('soundNotifications').checked = localStorage.getItem('soundNotifications') === 'true';
+            document.getElementById('vibrationNotifications').checked = localStorage.getItem('vibrationNotifications') === 'true';
+        }
+        
+        function saveNotificationSettings() {
+            localStorage.setItem('notificationsEnabled', document.getElementById('notificationsEnabled').checked);
+            localStorage.setItem('notificationDays', document.getElementById('notificationDays').value);
+            localStorage.setItem('soundNotifications', document.getElementById('soundNotifications').checked);
+            localStorage.setItem('vibrationNotifications', document.getElementById('vibrationNotifications').checked);
+            
+            if (document.getElementById('notificationsEnabled').checked) {
+                enableNotifications();
+            } else {
+                disableNotifications();
+            }
+            
+            toast(lang === 'fr' ? 'Paramètres de notifications enregistrés' : 'تم حفظ إعدادات الإشعارات');
+        }
+        
+        function loadSavedSettings() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                theme = savedTheme;
+                document.body.setAttribute('data-theme', theme);
+                document.getElementById('themeIcon').className = 'fas fa-' + (theme === 'light' ? 'moon' : 'sun');
+            }
+            
+            const savedLang = localStorage.getItem('lang');
+            if (savedLang) {
+                lang = savedLang;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.getElementById('langBtn').textContent = lang === 'ar' ? 'FR' : 'ع';
+            }
+        }
+        
+        function saveData() {
+            if (currentOffice) {
+                const data = { 
+                    cases, 
+                    clients, 
+                    tasks, 
+                    payments, 
+                    settings 
+                };
+                localStorage.setItem('data_' + currentOffice, JSON.stringify(data));
+                return true;
+            }
+            return false;
+        }
+        
+        function renderOffices() {
+            const select = document.getElementById('officeSelect');
+            select.innerHTML = '';
+            
+            if (offices.length > 0) {
+                offices.forEach(o => {
+                    const option = document.createElement('option');
+                    option.value = o.id;
+                    option.textContent = o.name;
+                    if (o.id === currentOffice) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = lang === 'fr' ? 'Aucun cabinet' : 'لا يوجد مكاتب';
+                option.disabled = true;
+                option.selected = true;
+                select.appendChild(option);
+            }
+        }
+        
+        function updateOfficeDisplay() {
+            if (offices.length > 0 && currentOffice) {
+                document.getElementById('noOfficeScreen').classList.remove('active');
+                document.getElementById('home').classList.add('active');
+                document.querySelector('.fab').style.display = 'block';
+                refresh();
+            } else {
+                document.getElementById('noOfficeScreen').classList.add('active');
+                document.getElementById('home').classList.remove('active');
+                document.querySelectorAll('.page:not(#noOfficeScreen)').forEach(p => p.classList.remove('active'));
+                document.querySelector('.fab').style.display = 'none';
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            }
+        }
+        
+        function changeOffice() {
+            saveData();
+            currentOffice = document.getElementById('officeSelect').value;
+            localStorage.setItem('currentOffice', currentOffice);
+            loadData();
+            updateOfficeDisplay();
+            toast(lang === 'fr' ? 'Cabinet changé' : 'تم تغيير المكتب');
+        }
+        
+        function addOffice() {
+            openModal('officeModal');
+        }
+        
+        function saveNewOffice() {
+            const name = document.getElementById('newOfficeName').value.trim();
+            if (!name) {
+                toast(lang === 'fr' ? 'Veuillez saisir un nom' : 'يرجى إدخال اسم');
+                return;
+            }
+            
+            const id = Date.now().toString();
+            const phone = document.getElementById('officePhone').value;
+            const address = document.getElementById('officeAddress').value;
+            const notes = document.getElementById('officeNotes').value;
+            
+            offices.push({ 
+                id, 
+                name, 
+                phone: phone || '',
+                address: address || '',
+                notes: notes || ''
+            });
+            
+            if (offices.length === 1) {
+                currentOffice = id;
+            }
+            
+            localStorage.setItem('offices', JSON.stringify(offices));
+            localStorage.setItem('currentOffice', currentOffice);
+            
+            cases = [];
+            clients = [];
+            tasks = [];
+            payments = [];
+            
+            if (saveData()) {
+                renderOffices();
+                closeModal('officeModal');
+                updateOfficeDisplay();
+                toast(lang === 'fr' ? 'Cabinet créé avec succès' : 'تم إنشاء المكتب بنجاح');
+                
+                // إعادة تعيين الحقول
+                document.getElementById('newOfficeName').value = '';
+                document.getElementById('officePhone').value = '';
+                document.getElementById('officeAddress').value = '';
+                document.getElementById('officeNotes').value = '';
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de la création' : 'خطأ في إنشاء المكتب');
+            }
+        }
+        
+        // ========== حذف مكتب ==========
+        function openDeleteOfficeModal() {
+            if (offices.length === 0) {
+                toast(lang === 'fr' ? 'Aucun cabinet à supprimer' : 'لا توجد مكاتب لحذفها');
+                return;
+            }
+            
+            const select = document.getElementById('officeToDelete');
+            select.innerHTML = '';
+            
+            offices.forEach(o => {
+                const option = document.createElement('option');
+                option.value = o.id;
+                option.textContent = o.name;
+                if (o.id === currentOffice) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            
+            openModal('deleteOfficeModal');
+        }
+        
+        function confirmDeleteOffice() {
+            const officeId = document.getElementById('officeToDelete').value;
+            const officeName = offices.find(o => o.id === officeId)?.name || '';
+            
+            if (confirm(`${lang === 'fr' ? 'Êtes-vous sûr de vouloir supprimer le cabinet' : 'هل أنت متأكد من رغبتك في حذف المكتب'} "${officeName}"؟ ${lang === 'fr' ? 'Cette action est irréversible.' : 'هذا الإجراء لا يمكن التراجع عنه.'}`)) {
+                deleteOffice(officeId);
+            }
+        }
+        
+        function deleteOffice(officeId) {
+            // حذف بيانات المكتب من localStorage
+            localStorage.removeItem('data_' + officeId);
+            
+            // إزالة المكتب من القائمة
+            offices = offices.filter(o => o.id !== officeId);
+            
+            // تحديث localStorage
+            localStorage.setItem('offices', JSON.stringify(offices));
+            
+            // إذا كان المكتب المحذوف هو الحالي، ننتقل إلى مكتب آخر أو نعرض شاشة لا يوجد مكاتب
+            if (officeId === currentOffice) {
+                if (offices.length > 0) {
+                    currentOffice = offices[0].id;
+                    localStorage.setItem('currentOffice', currentOffice);
+                    loadData();
+                } else {
+                    currentOffice = '';
+                    localStorage.removeItem('currentOffice');
+                    cases = [];
+                    clients = [];
+                    tasks = [];
+                    payments = [];
+                }
+            }
+            
+            renderOffices();
+            updateOfficeDisplay();
+            closeModal('deleteOfficeModal');
+            
+            toast(lang === 'fr' ? 'Cabinet supprimé avec succès' : 'تم حذف المكتب بنجاح');
+        }
+        
+        // ========== الترجمة ==========
+        function translateText(frText, arText) {
+            return lang === 'fr' ? frText : arText;
+        }
+        
+        function translatePage() {
+            Object.keys(translations[lang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+            });
+            
+            if (lang === 'fr') {
+                document.querySelectorAll('.stat h3').forEach(el => {
+                    el.textContent = formatNumberFrench(el.textContent);
+                });
+                document.getElementById('totalPaid').textContent = formatNumberFrench(document.getElementById('totalPaid').textContent);
+                document.getElementById('totalRemain').textContent = formatNumberFrench(document.getElementById('totalRemain').textContent);
+                document.getElementById('totalAgreed').textContent = formatNumberFrench(document.getElementById('totalAgreed').textContent);
+            }
+            
+            // تحديث رمز التفعيل المعروض
+            document.getElementById('currentCodeDisplay').textContent = CODE;
+        }
+        
+        function formatNumberFrench(num) {
+            if (lang !== 'fr') return num;
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        // ========== التنقل ==========
+        function goTo(page, btn) {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+            btn.classList.add('active');
+            document.querySelector('.fab').style.display = page === 'settings' ? 'none' : 'block';
+        }
+        
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+            if (id === 'caseModal') {
+                postponements = [];
+                editingPostponementIndex = -1;
+                document.getElementById('postponementsList').innerHTML = '';
+                document.getElementById('postponementForm').style.display = 'none';
+            }
+        }
+        
+        function openAddModal() {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            openModal('addModal');
+        }
+        
+        function toggleTheme() {
+            theme = theme === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            document.getElementById('themeIcon').className = 'fas fa-' + (theme === 'light' ? 'moon' : 'sun');
+            localStorage.setItem('theme', theme);
+        }
+        
+        function toggleLang() {
+            lang = lang === 'ar' ? 'fr' : 'ar';
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('langBtn').textContent = lang === 'ar' ? 'FR' : 'ع';
+            localStorage.setItem('lang', lang);
+            translatePage();
+        }
+        
+        // ========== وظائف مساعدة ==========
+        function genId() {
+            return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function fmtDate(d) {
+            if (!d) return '-';
+            const date = new Date(d);
+            return lang === 'fr' 
+                ? date.toLocaleDateString('fr-FR')
+                : date.toLocaleDateString('ar-DZ');
+        }
+        
+        function addDays(d, n) {
+            const x = new Date(d);
+            x.setDate(x.getDate() + n);
+            return x.toISOString().split('T')[0];
+        }
+        
+        function daysDiff(d) {
+            return Math.ceil((new Date(d) - new Date()) / 86400000);
+        }
+        
+        function toast(msg) {
+            document.getElementById('toastMsg').textContent = msg;
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+            
+            sendNotification('مكتب المحاماة', msg);
+        }
+        
+        // ========== حذف التاريخ ==========
+        function clearDate(fieldId) {
+            document.getElementById(fieldId).value = '';
+        }
+        
+        // ========== الإشعارات ==========
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) {
+                toast(translateText("Ce navigateur ne supporte pas les notifications", "هذا المتصفح لا يدعم الإشعارات"));
+                return;
+            }
+            
+            if (Notification.permission === "granted") {
+                toast(translateText("Notifications déjà activées", "الإشعارات مفعلة بالفعل"));
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        toast(translateText("Notifications activées", "تم تمكين الإشعارات"));
+                    }
+                });
+            }
+        }
+        
+        function sendNotification(title, body) {
+            if (Notification.permission !== "granted") return;
+            if (localStorage.getItem('notificationsEnabled') !== 'true') return;
+            
+            const options = {
+                body: body,
+                icon: '/icon.png',
+                badge: '/badge.png'
+            };
+            
+            // إضافة الصوت إذا كان مفعلاً
+            if (localStorage.getItem('soundNotifications') === 'true') {
+                try {
+                    const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
+                    audio.play();
+                } catch (e) {
+                    console.log('لا يمكن تشغيل الصوت');
+                }
+            }
+            
+            // إضافة الاهتزاز إذا كان مفعلاً
+            if (localStorage.getItem('vibrationNotifications') === 'true' && navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+            
+            new Notification(title, options);
+        }
+        
+        function enableNotifications() {
+            if (window.notificationInterval) {
+                clearInterval(window.notificationInterval);
+            }
+            
+            window.notificationInterval = setInterval(() => {
+                checkAndSendNotifications();
+            }, 60 * 60 * 1000);
+            
+            checkAndSendNotifications();
+        }
+        
+        function disableNotifications() {
+            if (window.notificationInterval) {
+                clearInterval(window.notificationInterval);
+                window.notificationInterval = null;
+            }
+        }
+        
+        function checkAndSendNotifications() {
+            if (Notification.permission !== "granted") return;
+            if (localStorage.getItem('notificationsEnabled') !== 'true') return;
+            
+            const daysBefore = parseInt(localStorage.getItem('notificationDays') || 1);
+            const now = new Date();
+            
+            // التحقق من القضايا
+            cases.forEach(c => {
+                if (!c.reminderEnabled) return;
+                
+                if (c.reminderDate) {
+                    const reminderDate = new Date(c.reminderDate);
+                    const diffDays = Math.ceil((reminderDate - now) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays === daysBefore) {
+                        sendNotification(
+                            lang === 'fr' ? 'Rappel d\'affaire' : 'تذكير بقضية',
+                            `${lang === 'fr' ? 'Affaire' : 'قضية'} ${c.num} ${lang === 'fr' ? 'dans' : 'بعد'} ${daysBefore} ${lang === 'fr' ? 'jour(s)' : 'يوم'}`
+                        );
+                    }
+                }
+            });
+            
+            // التحقق من المهام
+            tasks.forEach(t => {
+                if (!t.done && t.reminderEnabled && t.reminderDate) {
+                    const reminderDate = new Date(t.reminderDate);
+                    const diffDays = Math.ceil((reminderDate - now) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays === daysBefore) {
+                        sendNotification(
+                            lang === 'fr' ? 'Rappel de tâche' : 'تذكير بمهمة',
+                            `${t.title} ${lang === 'fr' ? 'dans' : 'بعد'} ${daysBefore} ${lang === 'fr' ? 'jour(s)' : 'يوم'}`
+                        );
+                    }
+                }
+            });
+        }
+        
+        // ========== التحديث ==========
+        function refresh() {
+            if (!currentOffice) return;
+            
+            document.getElementById('caseCount').textContent = formatNumberFrench(cases.length.toString());
+            document.getElementById('clientCount').textContent = formatNumberFrench(clients.length.toString());
+            document.getElementById('taskCount').textContent = formatNumberFrench(tasks.filter(t => !t.done).length.toString());
+            
+            // حساب عدد الجلسات القادمة
+            const sessionCount = cases.filter(c => {
+                const currentDate = getCurrentSessionDate(c);
+                return currentDate && daysDiff(currentDate) >= 0;
+            }).length;
+            
+            document.getElementById('sessionCount').textContent = formatNumberFrench(sessionCount.toString());
+            
+            renderReminders();
+            renderCases();
+            renderClients();
+            renderTasks();
+            renderPayments();
+        }
+        
+        // الحصول على تاريخ الجلسة الحالية
+        function getCurrentSessionDate(caseItem) {
+            if (!caseItem) return null;
+            
+            if (caseItem.postponements && caseItem.postponements.length > 0) {
+                const sortedPostponements = [...caseItem.postponements].sort((a, b) => 
+                    new Date(b.date) - new Date(a.date)
+                );
+                return sortedPostponements[0].date;
+            }
+            
+            return caseItem.currentDate || caseItem.firstDate;
+        }
+        
+        function renderReminders() {
+            const el = document.getElementById('reminders');
+            let items = [];
+            
+            cases.forEach(c => {
+                const currentSessionDate = getCurrentSessionDate(c);
+                
+                if (currentSessionDate && daysDiff(currentSessionDate) >= 0 && daysDiff(currentSessionDate) <= 3) {
+                    items.push({ 
+                        text: (lang === 'fr' ? 'Session: ' : 'جلسة: ') + c.num, 
+                        date: currentSessionDate, 
+                        days: daysDiff(currentSessionDate),
+                        caseId: c.id
+                    });
+                }
+                
+                if (c.appealDate && daysDiff(c.appealDate) >= 0 && daysDiff(c.appealDate) <= 5) {
+                    const appealText = selectedCourt === 'مجلس' || selectedCourt === 'عليا' 
+                        ? (lang === 'fr' ? 'Recours: ' : 'طعن: ')
+                        : (lang === 'fr' ? 'Appel: ' : 'استئناف: ');
+                    items.push({ 
+                        text: appealText + c.num, 
+                        date: c.appealDate, 
+                        days: daysDiff(c.appealDate),
+                        caseId: c.id
+                    });
+                }
+            });
+            
+            // إضافة تذكيرات المهام
+            tasks.forEach(t => {
+                if (!t.done && t.reminderEnabled && t.reminderDate) {
+                    const diffDays = daysDiff(t.reminderDate);
+                    if (diffDays >= 0 && diffDays <= 3) {
+                        items.push({
+                            text: (lang === 'fr' ? 'Tâche: ' : 'مهمة: ') + t.title,
+                            date: t.reminderDate,
+                            days: diffDays,
+                            taskId: t.id
+                        });
+                    }
+                }
+            });
+            
+            if (!items.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-check"></i><p>${lang === 'fr' ? 'Aucun rappel' : 'لا توجد تذكيرات'}</p></div>`;
+                return;
+            }
+            
+            el.innerHTML = items.sort((a, b) => a.days - b.days).map(i => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${i.text}</span>
+                        <span class="item-badge badge-${i.days <= 1 ? 'danger' : 'warning'}">
+                            ${i.days === 0 ? (lang === 'fr' ? 'Aujourd\'hui' : 'اليوم') : (lang === 'fr' ? 'Dans ' + i.days + ' jours' : 'بعد ' + i.days + ' يوم')}
+                        </span>
+                    </div>
+                    <div class="item-actions">
+                        ${i.caseId ? `<button class="btn-edit" onclick="editCase('${i.caseId}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>` : ''}
+                        ${i.taskId ? `<button class="btn-edit" onclick="editTask('${i.taskId}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ========== القضايا مع التأجيلات ==========
+        function renderCases() {
+            const el = document.getElementById('casesList');
+            const q = document.getElementById('caseSearch')?.value?.toLowerCase() || '';
+            const list = cases.filter(c => 
+                c.num.toLowerCase().includes(q) || 
+                (c.court && c.court.toLowerCase().includes(q)) ||
+                (c.section && c.section.toLowerCase().includes(q))
+            );
+            
+            if (!list.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-folder-open"></i><p>${lang === 'fr' ? 'Aucune affaire' : 'لا توجد قضايا'}</p></div>`;
+                return;
+            }
+            
+            el.innerHTML = list.map(c => {
+                const client = clients.find(x => x.id === c.clientId);
+                const statusText = c.status === 'مسجلة' ? (lang === 'fr' ? 'Enregistrée' : 'مسجلة') :
+                                  c.status === 'تنفيذ' ? (lang === 'fr' ? 'En cours' : 'قيد التنفيذ') :
+                                  (lang === 'fr' ? 'Jugée' : 'محكوم فيها');
+                
+                const postponementCount = c.postponements ? c.postponements.length : 0;
+                const currentSessionDate = getCurrentSessionDate(c);
+                
+                return `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${c.num}</span>
+                        <span class="item-badge badge-info">${statusText}</span>
+                    </div>
+                    <div class="item-meta">
+                        <span><i class="fas fa-university"></i> ${c.section}</span>
+                        ${client ? `<span><i class="fas fa-user"></i> ${client.name}</span>` : ''}
+                        ${currentSessionDate ? `<span><i class="fas fa-calendar"></i> ${fmtDate(currentSessionDate)}</span>` : ''}
+                        ${postponementCount > 0 ? `<span><i class="fas fa-calendar-times"></i> ${postponementCount} تأجيل</span>` : ''}
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="editCase('${c.id}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>
+                        <button class="btn-delete" onclick="delCase('${c.id}')">
+                            <i class="fas fa-trash"></i> ${lang === 'fr' ? 'Supprimer' : 'حذف'}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        function openCaseModal(c = null) {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            
+            closeModal('addModal');
+            document.getElementById('caseId').value = c?.id || '';
+            document.getElementById('caseNum').value = c?.num || '';
+            document.getElementById('caseCourt').value = c?.court || '';
+            document.getElementById('caseFirstDate').value = c?.firstDate || '';
+            
+            // تحميل التأجيلات
+            postponements = c?.postponements || [];
+            
+            // حساب تاريخ الجلسة الحالية
+            let currentSessionDate = c?.currentDate || '';
+            if (postponements && postponements.length > 0) {
+                const sortedPostponements = [...postponements].sort((a, b) => 
+                    new Date(b.date) - new Date(a.date)
+                );
+                currentSessionDate = sortedPostponements[0].date;
+            }
+            
+            document.getElementById('caseCurrentDate').value = currentSessionDate;
+            document.getElementById('caseFileDate').value = c?.fileDate || '';
+            document.getElementById('caseSummonDate').value = c?.summonDate || '';
+            document.getElementById('caseDelibDate').value = c?.delibDate || '';
+            document.getElementById('caseAppealDate').value = c?.appealDate || '';
+            document.getElementById('caseReminderDate').value = c?.reminderDate || '';
+            document.getElementById('caseReminderEnabled').checked = c?.reminderEnabled || false;
+            document.getElementById('caseStatus').value = c?.status || 'مسجلة';
+            document.getElementById('caseNotes').value = c?.notes || '';
+            
+            renderPostponements();
+            
+            loadClientSelect();
+            if (c) document.getElementById('caseClient').value = c.clientId || '';
+            
+            document.getElementById('caseModalTitle').textContent = c 
+                ? (lang === 'fr' ? 'Modifier l\'affaire' : 'تعديل القضية')
+                : (lang === 'fr' ? 'Nouvelle affaire' : 'قضية جديدة');
+            
+            editingPostponementIndex = -1;
+            document.getElementById('postponementForm').style.display = 'none';
+            document.getElementById('postponementDate').value = '';
+            document.getElementById('postponementReason').value = '';
+            document.getElementById('postponementNotes').value = '';
+            
+            openModal('caseModal');
+            updateFileDateVisibility();
+        }
+        
+        // عرض التأجيلات
+        function renderPostponements() {
+            const listDiv = document.getElementById('postponementsList');
+            if (!postponements || postponements.length === 0) {
+                listDiv.innerHTML = '<p style="color: var(--text2); text-align: center; padding: 10px;">لا توجد تأجيلات</p>';
+                return;
+            }
+            
+            const sortedPostponements = [...postponements].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            listDiv.innerHTML = sortedPostponements.map((p, index) => `
+                <div class="postponement-item">
+                    <div>
+                        <div class="postponement-date">${fmtDate(p.date)}</div>
+                        <div class="postponement-reason">${p.reason || ''}</div>
+                        ${p.notes ? `<div style="font-size: 0.75rem; color: var(--text2); margin-top: 2px;">${p.notes}</div>` : ''}
+                    </div>
+                    <div class="postponement-actions">
+                        <button onclick="editPostponement(${postponements.indexOf(p)})" style="background:none; border:none; color:var(--primary); cursor:pointer;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deletePostponement(${postponements.indexOf(p)})" style="background:none; border:none; color:var(--danger); cursor:pointer;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // إضافة تأجيل جديد
+        function addPostponement() {
+            document.getElementById('postponementForm').style.display = 'block';
+            document.getElementById('postponementDate').value = '';
+            document.getElementById('postponementReason').value = '';
+            document.getElementById('postponementNotes').value = '';
+            editingPostponementIndex = -1;
+        }
+        
+        // إلغاء إضافة تأجيل
+        function cancelPostponement() {
+            document.getElementById('postponementForm').style.display = 'none';
+            editingPostponementIndex = -1;
+        }
+        
+        // حفظ التأجيل
+        function savePostponement() {
+            const date = document.getElementById('postponementDate').value;
+            const reason = document.getElementById('postponementReason').value;
+            const notes = document.getElementById('postponementNotes').value;
+            
+            if (!date) {
+                toast(lang === 'fr' ? 'Veuillez saisir la date de report' : 'يرجى إدخال تاريخ التأجيل');
+                return;
+            }
+            
+            const postponement = {
+                date: date,
+                reason: reason || '',
+                notes: notes || '',
+                createdAt: new Date().toISOString()
+            };
+            
+            if (editingPostponementIndex >= 0) {
+                postponements[editingPostponementIndex] = postponement;
+            } else {
+                postponements.push(postponement);
+            }
+            
+            // تحديث تاريخ الجلسة الحالية إلى آخر تأجيل
+            if (postponements.length > 0) {
+                const sortedPostponements = [...postponements].sort((a, b) => 
+                    new Date(b.date) - new Date(a.date)
+                );
+                document.getElementById('caseCurrentDate').value = sortedPostponements[0].date;
+                
+                // تحديث تاريخ التذكير تلقائياً
+                document.getElementById('caseReminderDate').value = sortedPostponements[0].date;
+            }
+            
+            renderPostponements();
+            document.getElementById('postponementForm').style.display = 'none';
+            editingPostponementIndex = -1;
+            
+            toast(lang === 'fr' ? 'Report enregistré' : 'تم حفظ التأجيل');
+        }
+        
+        // تعديل تأجيل
+        function editPostponement(index) {
+            const p = postponements[index];
+            if (!p) return;
+            
+            document.getElementById('postponementDate').value = p.date;
+            document.getElementById('postponementReason').value = p.reason || '';
+            document.getElementById('postponementNotes').value = p.notes || '';
+            document.getElementById('postponementForm').style.display = 'block';
+            editingPostponementIndex = index;
+        }
+        
+        // حذف تأجيل
+        function deletePostponement(index) {
+            if (confirm(lang === 'fr' ? 'Supprimer ce report ?' : 'هل تريد حذف هذا التأجيل؟')) {
+                postponements.splice(index, 1);
+                renderPostponements();
+                
+                // تحديث تاريخ الجلسة الحالية بعد الحذف
+                if (postponements.length > 0) {
+                    const sortedPostponements = [...postponements].sort((a, b) => 
+                        new Date(b.date) - new Date(a.date)
+                    );
+                    document.getElementById('caseCurrentDate').value = sortedPostponements[0].date;
+                } else {
+                    document.getElementById('caseCurrentDate').value = document.getElementById('caseFirstDate').value || '';
+                }
+                
+                toast(lang === 'fr' ? 'Report supprimé' : 'تم حذف التأجيل');
+            }
+        }
+        
+        // حفظ القضية مع التأجيلات
+        async function saveCase() {
+            const caseNum = document.getElementById('caseNum').value.trim();
+            if (!caseNum) {
+                toast(lang === 'fr' ? 'Veuillez saisir le numéro d\'affaire' : 'يرجى إدخال رقم القضية');
+                return;
+            }
+            
+            const id = document.getElementById('caseId').value || genId();
+            
+            const data = {
+                id,
+                num: caseNum,
+                court: document.getElementById('caseCourt').value || '',
+                section: document.getElementById('caseSection').value || '',
+                clientId: document.getElementById('caseClient').value || '',
+                firstDate: document.getElementById('caseFirstDate').value || '',
+                currentDate: document.getElementById('caseCurrentDate').value || '',
+                fileDate: document.getElementById('caseFileDate').value || '',
+                summonDate: document.getElementById('caseSummonDate').value || '',
+                delibDate: document.getElementById('caseDelibDate').value || '',
+                appealDate: document.getElementById('caseAppealDate').value || '',
+                reminderDate: document.getElementById('caseReminderDate').value || '',
+                reminderEnabled: document.getElementById('caseReminderEnabled').checked || false,
+                status: document.getElementById('caseStatus').value || 'مسجلة',
+                notes: document.getElementById('caseNotes').value || '',
+                postponements: postponements
+            };
+            
+            const i = cases.findIndex(c => c.id === id);
+            if (i > -1) {
+                cases[i] = data;
+            } else {
+                cases.push(data);
+            }
+            
+            if (saveData()) {
+                closeModal('caseModal');
+                refresh();
+                toast(lang === 'fr' ? 'Affaire enregistrée' : 'تم حفظ القضية');
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de l\'enregistrement' : 'خطأ في حفظ القضية');
+            }
+        }
+        
+        function editCase(id) {
+            openCaseModal(cases.find(c => c.id === id));
+        }
+        
+        function delCase(id) {
+            if (confirm(lang === 'fr' ? 'Supprimer cette affaire ?' : 'هل تريد حذف هذه القضية؟')) {
+                cases = cases.filter(c => c.id !== id);
+                if (saveData()) {
+                    refresh();
+                    toast(lang === 'fr' ? 'Affaire supprimée' : 'تم حذف القضية');
+                }
+            }
+        }
+        
+        // ========== العملاء ==========
+        function renderClients() {
+            const el = document.getElementById('clientsList');
+            const q = document.getElementById('clientSearch')?.value?.toLowerCase() || '';
+            const list = clients.filter(c => 
+                c.name.toLowerCase().includes(q) || 
+                (c.phone && c.phone.includes(q)) ||
+                (c.addr && c.addr.toLowerCase().includes(q))
+            );
+            
+            if (!list.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-users"></i><p>${lang === 'fr' ? 'Aucun client' : 'لا يوجد عملاء'}</p></div>`;
+                return;
+            }
+            
+            el.innerHTML = list.map(c => {
+                const caseCount = cases.filter(x => x.clientId === c.id).length;
+                
+                return `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${c.name}</span>
+                        <span class="item-badge badge-info">
+                            ${caseCount} ${lang === 'fr' ? 'affaire(s)' : 'قضية'}
+                        </span>
+                    </div>
+                    <div class="item-meta">
+                        <span><i class="fas fa-phone"></i> ${c.phone || ''}</span>
+                        ${c.addr ? `<span><i class="fas fa-map-marker-alt"></i> ${c.addr.substring(0, 30)}${c.addr.length > 30 ? '...' : ''}</span>` : ''}
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="editClient('${c.id}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>
+                        <button class="btn-delete" onclick="delClient('${c.id}')">
+                            <i class="fas fa-trash"></i> ${lang === 'fr' ? 'Supprimer' : 'حذف'}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        function loadClientSelect() {
+            document.getElementById('caseClient').innerHTML = '<option value="">--</option>' + 
+                clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            document.getElementById('paymentClient').innerHTML = '<option value="">--</option>' + 
+                clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+        
+        function openClientModal(c = null) {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            
+            closeModal('addModal');
+            document.getElementById('clientId').value = c?.id || '';
+            document.getElementById('clientName').value = c?.name || '';
+            document.getElementById('clientPhone').value = c?.phone || '';
+            document.getElementById('clientAddr').value = c?.addr || '';
+            document.getElementById('clientNotes').value = c?.notes || '';
+            
+            document.getElementById('clientModalTitle').textContent = c 
+                ? (lang === 'fr' ? 'Modifier le client' : 'تعديل العميل')
+                : (lang === 'fr' ? 'Nouveau client' : 'عميل جديد');
+            
+            openModal('clientModal');
+        }
+        
+        function saveClient() {
+            const clientName = document.getElementById('clientName').value.trim();
+            if (!clientName) {
+                toast(lang === 'fr' ? 'Veuillez saisir le nom du client' : 'يرجى إدخال اسم العميل');
+                return;
+            }
+            
+            const id = document.getElementById('clientId').value || genId();
+            
+            const data = {
+                id,
+                name: clientName,
+                phone: document.getElementById('clientPhone').value || '',
+                addr: document.getElementById('clientAddr').value || '',
+                notes: document.getElementById('clientNotes').value || ''
+            };
+            
+            const i = clients.findIndex(c => c.id === id);
+            if (i > -1) {
+                clients[i] = data;
+            } else {
+                clients.push(data);
+            }
+            
+            if (saveData()) {
+                closeModal('clientModal');
+                refresh();
+                toast(lang === 'fr' ? 'Client enregistré' : 'تم حفظ العميل');
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de l\'enregistrement' : 'خطأ في حفظ العميل');
+            }
+        }
+        
+        function editClient(id) {
+            openClientModal(clients.find(c => c.id === id));
+        }
+        
+        function delClient(id) {
+            if (confirm(translateText('Supprimer ce client et toutes ses données ? Cette action supprimera également ses affaires et paiements.', 'هل تريد حذف هذا العميل وجميع بياناته؟ هذا الإجراء سيمحي أيضاً قضاياه ومدفوعاته.'))) {
+                cases = cases.filter(c => c.clientId !== id);
+                payments = payments.filter(p => p.clientId !== id);
+                clients = clients.filter(c => c.id !== id);
+                
+                if (saveData()) {
+                    refresh();
+                    toast(lang === 'fr' ? 'Client et toutes ses données supprimés' : 'تم حذف العميل وجميع بياناته');
+                }
+            }
+        }
+        
+        // ========== المحاكم ==========
+        function selectCourt(c) {
+            selectedCourt = c;
+            document.querySelectorAll('.court-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            updateSections();
+            checkAppeal();
+            updateFileDateVisibility();
+        }
+        
+        function updateSections() {
+            const sections = SECTIONS[selectedCourt] || [];
+            document.getElementById('caseSection').innerHTML = sections.map(s => `<option>${s}</option>`).join('');
+            updateFileDateVisibility();
+        }
+        
+        function checkAppeal() {
+            const section = document.getElementById('caseSection').value;
+            const group = document.getElementById('appealGroup');
+            const label = document.getElementById('appealLabel');
+            
+            if (selectedCourt === 'عليا') {
+                label.textContent = lang === 'fr' ? 'Date du pourvoi en cassation' : 'تاريخ الطعن بالنقض';
+                group.style.display = 'block';
+            } else if (selectedCourt === 'مجلس') {
+                label.textContent = lang === 'fr' ? 'Date du recours' : 'تاريخ الطعن';
+                group.style.display = 'block';
+            } else if (section.includes('جنح') || section.includes('جزائي') || section.includes('تحقيق') || section.includes('اتهام')) {
+                label.textContent = lang === 'fr' ? "Date d'appel" : 'تاريخ الاستئناف';
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
+            }
+        }
+        
+        function updateFileDateVisibility() {
+            const section = document.getElementById('caseSection').value;
+            const fileDateGroup = document.getElementById('fileDateGroup');
+            
+            if (section.includes('جنح') || section.includes('جزائي') || section.includes('تحقيق') || 
+                selectedCourt === 'عليا') {
+                fileDateGroup.style.display = 'none';
+            } else {
+                fileDateGroup.style.display = 'block';
+            }
+        }
+        
+        function autoFillDates() {
+            const d = document.getElementById('caseFirstDate').value;
+            if (!d) return;
+            
+            document.getElementById('caseFileDate').value = addDays(d, -settings.fileDays);
+            document.getElementById('caseSummonDate').value = addDays(d, -settings.summonDays);
+            document.getElementById('caseCurrentDate').value = d;
+            document.getElementById('caseReminderDate').value = d;
+            
+            updateFileDateVisibility();
+        }
+        
+        function calcAppealDate() {
+            const d = document.getElementById('caseDelibDate').value;
+            if (!d) return;
+            
+            const section = document.getElementById('caseSection').value;
+            let days = settings.appealJunah;
+            
+            if (section.includes('جزائي')) days = settings.appealJazaia;
+            else if (section.includes('تحقيق') || section.includes('اتهام')) days = settings.appealTahqiq;
+            else if (selectedCourt === 'عليا') days = settings.appealNaqd;
+            
+            document.getElementById('caseAppealDate').value = addDays(d, days);
+        }
+        
+        // ========== المهام مع التذكير ==========
+        function renderTasks() {
+            const el = document.getElementById('tasksList');
+            
+            if (!tasks.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-tasks"></i><p>${lang === 'fr' ? 'Aucune tâche' : 'لا توجد مهام'}</p></div>`;
+                return;
+            }
+            
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.done === b.done) {
+                    return new Date(a.date) - new Date(b.date);
+                }
+                return a.done ? 1 : -1;
+            });
+            
+            el.innerHTML = sortedTasks.map(t => {
+                const priorityText = t.prio === 'عاجل' ? (lang === 'fr' ? 'Urgent' : 'عاجل') :
+                                   t.prio === 'مهم' ? (lang === 'fr' ? 'Important' : 'مهم') :
+                                   (lang === 'fr' ? 'Normal' : 'عادي');
+                
+                const reminderBadge = t.reminderEnabled ? 
+                    `<span class="item-badge badge-warning" style="margin-left: 5px;">
+                        <i class="fas fa-bell"></i> ${fmtDate(t.reminderDate) || ''}
+                    </span>` : '';
+                
+                return `
+                <div class="item" style="border-color:${t.done ? '#28a745' : t.prio === 'عاجل' ? '#dc3545' : '#1a5f7a'}">
+                    <div class="item-header" onclick="toggleTask('${t.id}')" style="cursor:pointer">
+                        <span class="item-title" style="${t.done ? 'text-decoration:line-through;opacity:0.5' : ''}">${t.title}</span>
+                        <span class="item-badge badge-${t.done ? 'success' : t.prio === 'عاجل' ? 'danger' : 'info'}">
+                            ${t.done ? (lang === 'fr' ? '✓ Terminé' : '✓ مكتمل') : priorityText}
+                        </span>
+                        ${reminderBadge}
+                    </div>
+                    ${t.date ? `<div class="item-meta"><span><i class="fas fa-calendar"></i> ${fmtDate(t.date)}</span></div>` : ''}
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="editTask('${t.id}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>
+                        <button class="btn-delete" onclick="deleteTaskFromList('${t.id}')">
+                            <i class="fas fa-trash"></i> ${lang === 'fr' ? 'Supprimer' : 'حذف'}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        function openTaskModal(task = null) {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            
+            closeModal('addModal');
+            document.getElementById('taskId').value = task?.id || '';
+            document.getElementById('taskTitle').value = task?.title || '';
+            document.getElementById('taskDate').value = task?.date || new Date().toISOString().split('T')[0];
+            document.getElementById('taskPrio').value = task?.prio || 'عادي';
+            document.getElementById('taskReminderDate').value = task?.reminderDate || '';
+            document.getElementById('taskReminderEnabled').checked = task?.reminderEnabled || false;
+            
+            document.getElementById('taskModalTitle').textContent = task 
+                ? (lang === 'fr' ? 'Modifier la tâche' : 'تعديل المهمة')
+                : (lang === 'fr' ? 'Nouvelle tâche' : 'مهمة جديدة');
+            
+            // زر حذف للمهمة عند التعديل
+            if (task) {
+                const modalFooter = document.getElementById('taskModalFooter');
+                modalFooter.innerHTML = `
+                    <button class="btn" style="background:#eee" onclick="closeModal('taskModal')">
+                        ${lang === 'fr' ? 'Annuler' : 'إلغاء'}
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteTask('${task.id}')">
+                        <i class="fas fa-trash"></i> ${lang === 'fr' ? 'Supprimer' : 'حذف'}
+                    </button>
+                    <button class="btn btn-primary" onclick="saveTask()">
+                        <i class="fas fa-save"></i> ${lang === 'fr' ? 'Enregistrer' : 'حفظ'}
+                    </button>
+                `;
+            } else {
+                const modalFooter = document.getElementById('taskModalFooter');
+                modalFooter.innerHTML = `
+                    <button class="btn" style="background:#eee" onclick="closeModal('taskModal')" id="cancelTaskText">إلغاء</button>
+                    <button class="btn btn-primary" onclick="saveTask()" id="saveTaskBtnText">حفظ المهمة</button>
+                `;
+            }
+            
+            openModal('taskModal');
+        }
+        
+        function deleteTask(id) {
+            if (confirm(lang === 'fr' ? 'Supprimer cette tâche ?' : 'هل تريد حذف هذه المهمة؟')) {
+                tasks = tasks.filter(t => t.id !== id);
+                if (saveData()) {
+                    closeModal('taskModal');
+                    refresh();
+                    toast(lang === 'fr' ? 'Tâche supprimée' : 'تم حذف المهمة');
+                }
+            }
+        }
+        
+        function saveTask() {
+            const taskTitle = document.getElementById('taskTitle').value.trim();
+            if (!taskTitle) {
+                toast(lang === 'fr' ? 'Veuillez saisir le titre de la tâche' : 'يرجى إدخال عنوان المهمة');
+                return;
+            }
+            
+            const id = document.getElementById('taskId').value || genId();
+            const data = {
+                id,
+                title: taskTitle,
+                date: document.getElementById('taskDate').value,
+                prio: document.getElementById('taskPrio').value,
+                reminderDate: document.getElementById('taskReminderDate').value || '',
+                reminderEnabled: document.getElementById('taskReminderEnabled').checked || false,
+                done: false
+            };
+            
+            const i = tasks.findIndex(x => x.id === id);
+            if (i > -1) {
+                tasks[i] = data;
+            } else {
+                tasks.push(data);
+            }
+            
+            if (saveData()) {
+                closeModal('taskModal');
+                refresh();
+                toast(lang === 'fr' ? 'Tâche enregistrée' : 'تم حفظ المهمة');
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de l\'enregistrement' : 'خطأ في حفظ المهمة');
+            }
+        }
+        
+        function toggleTask(id) {
+            const t = tasks.find(x => x.id === id);
+            if (t) {
+                t.done = !t.done;
+                if (saveData()) {
+                    refresh();
+                }
+            }
+        }
+        
+        function editTask(id) {
+            openTaskModal(tasks.find(t => t.id === id));
+        }
+        
+        function deleteTaskFromList(id) {
+            if (confirm(lang === 'fr' ? 'Supprimer cette tâche ?' : 'هل تريد حذف هذه المهمة؟')) {
+                tasks = tasks.filter(t => t.id !== id);
+                if (saveData()) {
+                    refresh();
+                    toast(lang === 'fr' ? 'Tâche supprimée' : 'تم حذف المهمة');
+                }
+            }
+        }
+        
+        // ========== المدفوعات ==========
+        function renderPayments() {
+            let paid = 0, agreed = 0;
+            payments.forEach(p => {
+                paid += p.paid || 0;
+                agreed += p.agreed || 0;
+            });
+            
+            document.getElementById('totalPaid').textContent = formatNumberFrench(paid.toString());
+            document.getElementById('totalRemain').textContent = formatNumberFrench((agreed - paid).toString());
+            document.getElementById('totalAgreed').textContent = formatNumberFrench(agreed.toString());
+            
+            const el = document.getElementById('paymentsList');
+            if (!payments.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-coins"></i><p>${lang === 'fr' ? 'Aucun paiement' : 'لا توجد مدفوعات'}</p></div>`;
+                return;
+            }
+            
+            const sortedPayments = [...payments].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            el.innerHTML = sortedPayments.map(p => {
+                const client = clients.find(c => c.id === p.clientId);
+                const remain = (p.agreed || 0) - (p.paid || 0);
+                
+                return `
+                <div class="item" style="border-color:${remain > 0 ? '#dc3545' : '#28a745'}">
+                    <div class="item-header">
+                        <span class="item-title">${client?.name || '--'}</span>
+                        <span class="item-badge badge-${remain > 0 ? 'danger' : 'success'}">
+                            ${remain > 0 
+                                ? (lang === 'fr' ? 'Restant: ' + remain + ' DA' : '<span class="remaining-amount-clickable" onclick="payRemainingAmount(\'' + p.id + '\')">متبقي: ' + remain + ' دج</span>') 
+                                : (lang === 'fr' ? 'Complet' : 'مكتمل')}
+                        </span>
+                    </div>
+                    <div class="item-meta">
+                        <span>${lang === 'fr' ? 'Convenu: ' : 'المتفق: '}${p.agreed || 0} DA</span>
+                        <span>${lang === 'fr' ? 'Payé: ' : 'المدفوع: '}${p.paid || 0} DA</span>
+                        <span><i class="fas fa-calendar"></i> ${fmtDate(p.date)}</span>
+                    </div>
+                    <div class="payment-actions">
+                        <button class="btn-edit" onclick="editPayment('${p.id}')">
+                            <i class="fas fa-edit"></i> ${lang === 'fr' ? 'Modifier' : 'تعديل'}
+                        </button>
+                        <button class="btn-delete" onclick="delPayment('${p.id}')">
+                            <i class="fas fa-trash"></i> ${lang === 'fr' ? 'Supprimer' : 'حذف'}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        // دفع المبلغ المتبقي
+        function payRemainingAmount(paymentId) {
+            const paymentIndex = payments.findIndex(p => p.id === paymentId);
+            if (paymentIndex === -1) return;
+            
+            const payment = payments[paymentIndex];
+            const remain = (payment.agreed || 0) - (payment.paid || 0);
+            
+            if (remain <= 0) {
+                toast(lang === 'fr' ? 'Aucun montant restant' : 'لا يوجد مبلغ متبقي');
+                return;
+            }
+            
+            if (confirm(translateText('Marquer le montant restant de ' + remain + ' DA comme payé ?', 'هل تريد اعتبار المبلغ المتبقي ' + remain + ' دج كمدفوع؟'))) {
+                payment.paid = (payment.paid || 0) + remain;
+                
+                if (saveData()) {
+                    refresh();
+                    toast(translateText('Montant restant marqué comme payé', 'تم اعتبار المبلغ المتبقي كمدفوع'));
+                }
+            }
+        }
+        
+        // تعديل دفعة
+        function editPayment(id) {
+            const payment = payments.find(p => p.id === id);
+            if (!payment) return;
+            
+            openPaymentModal(payment);
+        }
+        
+        // حذف دفعة
+        function delPayment(id) {
+            if (confirm(lang === 'fr' ? 'Supprimer ce paiement ?' : 'هل تريد حذف هذه الدفعة؟')) {
+                payments = payments.filter(p => p.id !== id);
+                if (saveData()) {
+                    refresh();
+                    toast(lang === 'fr' ? 'Paiement supprimé' : 'تم حذف الدفعة');
+                }
+            }
+        }
+        
+        function openPaymentModal(p = null) {
+            if (offices.length === 0) {
+                toast(translateText('Créez un cabinet d\'abord', 'أنشئ مكتباً أولاً'));
+                return;
+            }
+            
+            closeModal('addModal');
+            loadClientSelect();
+            document.getElementById('paymentId').value = p?.id || '';
+            if (p) {
+                document.getElementById('paymentClient').value = p.clientId || '';
+                document.getElementById('paymentAgreed').value = p.agreed || '';
+                document.getElementById('paymentPaid').value = p.paid || '';
+                document.getElementById('paymentDate').value = p.date || new Date().toISOString().split('T')[0];
+                document.getElementById('paymentNote').value = p.note || '';
+            } else {
+                document.getElementById('paymentClient').value = '';
+                document.getElementById('paymentAgreed').value = '';
+                document.getElementById('paymentPaid').value = '';
+                document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('paymentNote').value = '';
+            }
+            
+            document.getElementById('paymentModalTitle').textContent = p 
+                ? (lang === 'fr' ? 'Modifier le paiement' : 'تعديل الدفعة')
+                : (lang === 'fr' ? 'Nouveau paiement' : 'دفعة جديدة');
+            
+            openModal('paymentModal');
+        }
+        
+        function savePayment() {
+            const clientId = document.getElementById('paymentClient').value;
+            if (!clientId) {
+                toast(lang === 'fr' ? 'Veuillez choisir un client' : 'يرجى اختيار عميل');
+                return;
+            }
+            
+            const agreed = parseFloat(document.getElementById('paymentAgreed').value) || 0;
+            const paid = parseFloat(document.getElementById('paymentPaid').value) || 0;
+            
+            if (agreed === 0 && paid === 0) {
+                toast(lang === 'fr' ? 'Veuillez saisir un montant' : 'يرجى إدخال مبلغ');
+                return;
+            }
+            
+            const id = document.getElementById('paymentId').value || genId();
+            const data = {
+                id,
+                clientId: clientId,
+                agreed: agreed,
+                paid: paid,
+                date: document.getElementById('paymentDate').value,
+                note: document.getElementById('paymentNote').value || ''
+            };
+            
+            const i = payments.findIndex(p => p.id === id);
+            if (i > -1) {
+                payments[i] = data;
+            } else {
+                payments.push(data);
+            }
+            
+            if (saveData()) {
+                closeModal('paymentModal');
+                refresh();
+                toast(lang === 'fr' ? 'Paiement enregistré' : 'تم حفظ الدفعة');
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de l\'enregistrement' : 'خطأ في حفظ الدفعة');
+            }
+        }
+        
+        // ========== تعديل المبالغ المالية ==========
+        function editFinancialAmounts() {
+            document.getElementById('financialModalTitle').textContent = 
+                lang === 'fr' ? 'Modifier les montants financiers' : 'تعديل المبالغ المالية';
+            
+            const totalAgreed = payments.reduce((sum, p) => sum + (p.agreed || 0), 0);
+            const totalPaid = payments.reduce((sum, p) => sum + (p.paid || 0), 0);
+            const totalRemain = totalAgreed - totalPaid;
+            
+            document.getElementById('totalAgreedInput').value = totalAgreed;
+            document.getElementById('totalPaidInput').value = totalPaid;
+            document.getElementById('totalRemainInput').value = totalRemain;
+            
+            openModal('financialModal');
+        }
+        
+        function saveFinancialAmounts() {
+            const totalAgreed = parseFloat(document.getElementById('totalAgreedInput').value) || 0;
+            const totalPaid = parseFloat(document.getElementById('totalPaidInput').value) || 0;
+            const totalRemain = parseFloat(document.getElementById('totalRemainInput').value) || 0;
+            
+            // في هذا المثال، نقوم بتعديل جميع المدفوعات بنسبة المبلغ الجديد
+            if (payments.length > 0) {
+                const oldTotalAgreed = payments.reduce((sum, p) => sum + (p.agreed || 0), 0);
+                const oldTotalPaid = payments.reduce((sum, p) => sum + (p.paid || 0), 0);
+                
+                if (oldTotalAgreed > 0) {
+                    const ratioAgreed = totalAgreed / oldTotalAgreed;
+                    const ratioPaid = totalPaid / oldTotalPaid;
+                    
+                    payments.forEach(p => {
+                        if (p.agreed) p.agreed = Math.round(p.agreed * ratioAgreed);
+                        if (p.paid) p.paid = Math.round(p.paid * ratioPaid);
+                    });
+                    
+                    if (saveData()) {
+                        toast(lang === 'fr' ? 'Montants financiers mis à jour' : 'تم تحديث المبالغ المالية');
+                        closeModal('financialModal');
+                        refresh();
+                    }
+                }
+            } else {
+                toast(lang === 'fr' ? 'Aucun paiement à modifier' : 'لا توجد مدفوعات لتعديلها');
+            }
+        }
+        
+        // ========== الإعدادات ==========
+        function saveSettings() {
+            settings.fileDays = parseInt(document.getElementById('sFileDays').value) || 1;
+            settings.summonDays = parseInt(document.getElementById('sSummonDays').value) || 3;
+            settings.judgDays = parseInt(document.getElementById('sJudgDays').value) || 7;
+            settings.appealJunah = parseInt(document.getElementById('sAppealJunah').value) || 10;
+            settings.appealJazaia = parseInt(document.getElementById('sAppealJazaia').value) || 10;
+            settings.appealTahqiq = parseInt(document.getElementById('sAppealTahqiq').value) || 3;
+            settings.appealNaqd = parseInt(document.getElementById('sAppealNaqd').value) || 60;
+            
+            if (saveData()) {
+                toast(lang === 'fr' ? 'Paramètres enregistrés' : 'تم حفظ الإعدادات');
+            } else {
+                toast(lang === 'fr' ? 'Erreur lors de l\'enregistrement' : 'خطأ في حفظ الإعدادات');
+            }
+        }
+        
+        function changeActivationCode() {
+            const newCode = document.getElementById('newActivationCode').value;
+            const confirmCode = document.getElementById('confirmActivationCode').value;
+            
+            if (!newCode || !confirmCode) {
+                toast(translateText('Veuillez remplir tous les champs', 'يرجى ملء جميع الحقول'));
+                return;
+            }
+            
+            if (newCode !== confirmCode) {
+                toast(translateText('Les codes ne correspondent pas', 'الرموز غير متطابقة'));
+                return;
+            }
+            
+            if (newCode.length !== 4 || !/^\d+$/.test(newCode)) {
+                toast(translateText('Le code doit être composé de 4 chiffres', 'يجب أن يتكون الرمز من 4 أرقام'));
+                return;
+            }
+            
+            CODE = newCode;
+            localStorage.setItem('activationCode', newCode);
+            
+            document.getElementById('newActivationCode').value = '';
+            document.getElementById('confirmActivationCode').value = '';
+            document.getElementById('currentCodeDisplay').textContent = newCode;
+            
+            toast(translateText('Code d\'activation changé avec succès', 'تم تغيير رمز التفعيل بنجاح'));
+        }
+        
+        function clearAllData() {
+            if (confirm(translateText('Êtes-vous sûr de vouloir effacer TOUTES les données ? Cette action est irréversible.', 'هل أنت متأكد من رغبتك في مسح جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه.'))) {
+                localStorage.clear();
+                offices = [];
+                currentOffice = '';
+                cases = [];
+                clients = [];
+                tasks = [];
+                payments = [];
+                
+                document.getElementById('activationScreen').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+                
+                toast(translateText('Toutes les données ont été effacées', 'تم مسح جميع البيانات'));
+            }
+        }
+        
+        function exportData() {
+            const data = {
+                offices,
+                currentOffice,
+                activationCode: CODE,
+                allData: {}
+            };
+            
+            offices.forEach(o => {
+                data.allData[o.id] = JSON.parse(localStorage.getItem('data_' + o.id) || '{}');
+            });
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `backup-mahakem-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            toast(lang === 'fr' ? 'Données exportées' : 'تم تصدير البيانات');
+        }
+        
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    
+                    if (data.offices) {
+                        offices = data.offices;
+                        localStorage.setItem('offices', JSON.stringify(offices));
+                    }
+                    
+                    if (data.allData) {
+                        for (let k in data.allData) {
+                            localStorage.setItem('data_' + k, JSON.stringify(data.allData[k]));
+                        }
+                    }
+                    
+                    if (data.currentOffice) {
+                        currentOffice = data.currentOffice;
+                        localStorage.setItem('currentOffice', currentOffice);
+                    }
+                    
+                    if (data.activationCode) {
+                        CODE = data.activationCode;
+                        localStorage.setItem('activationCode', CODE);
+                        document.getElementById('currentCodeDisplay').textContent = CODE;
+                    }
+                    
+                    loadData();
+                    renderOffices();
+                    updateOfficeDisplay();
+                    toast(lang === 'fr' ? 'Données importées' : 'تم استيراد البيانات');
+                } catch (err) {
+                    console.error('خطأ في الاستيراد:', err);
+                    toast(lang === 'fr' ? 'Erreur de fichier' : 'خطأ في الملف');
+                }
+            };
+            reader.readAsText(file);
+            
+            e.target.value = '';
+        }
+    </script>
+</body>
+</html>
